@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Spring Security Demo</title>
+</head>
+<body>
+	<h1>Only users with role ADMIN are allowed to see this page. You are: 
+		<span th:text="${user.username}" style="color: red"/><br/>
+		With these roles: <span th:each="role : ${user.authorities}" th:text="${role} + ' '"/>
+	</h1>
+	<h1><a href="/logout">Logout</a></h1>
+</body>
+</html>
