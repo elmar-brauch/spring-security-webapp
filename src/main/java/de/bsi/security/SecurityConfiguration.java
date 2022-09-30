@@ -1,45 +1,33 @@
 package de.bsi.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
 public class SecurityConfiguration {
 	
+	@Value("${sam.logout_url}")
+	private String logoutUrl;
+	
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/admin").hasRole("ADMIN")
-			.anyRequest().permitAll()
-			.and().formLogin()
-			.and().logout().logoutSuccessUrl("/index");
+		http.authorizeRequests().antMatchers("/secured").authenticated()
+				.anyRequest().permitAll()
+			.and().logout()
+				// In this demo HTTP GET instead of POST is used for logout, 
+				// so the logoutRequestMatcher is required to detect logout requests.
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.logoutSuccessHandler((req, resp, auth) -> new DefaultRedirectStrategy().sendRedirect(req, resp, logoutUrl))
+			.and().oauth2Login(c -> {
+				c.loginProcessingUrl("/checkout-scs/loggedin");
+				c.loginPage("/oauth2/authorization/sam");
+			});
 		return http.build();
-	}
-	
-	@Bean
-	UserDetailsService users(@Autowired PasswordEncoder pwEnc) {
-	    UserDetails user = User.builder()
-	        .username("user")
-	        .password(pwEnc.encode("top"))
-	        .roles("USER")
-	        .build();
-	    UserDetails admin = User.builder()
-	        .username("admin")
-	        .password(pwEnc.encode("secret"))
-	        .roles("USER", "ADMIN")
-	        .build();
-	    return new InMemoryUserDetailsManager(user, admin);
-	}
-	
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
 	}
 	
 }

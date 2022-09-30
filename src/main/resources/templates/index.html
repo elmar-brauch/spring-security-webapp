@@ -7,15 +7,14 @@
 </head>
 <body>
 	<div th:if="${user != null}">
-		<h1>Logged in as: 
-			<span th:text="${user.username}" style="color: red"/>
+		<h1>After Single Sign-On logged in as: 
+			<span th:text="${user.name}" style="color: red"/>
 		</h1>
-		<h1><a href="/logout">Logout with Spring's default logout-form</a></h1>
-		<h1><a href="/admin">Secured admin page</a></h1>
+		<h1><a href="/logout">Spring's logout</a></h1>
 	</div>
 	<div th:if="${user == null}">
-		<h1>Anonymous user please authenticate.</h1>
-		<h1><a href="/login">Login with Spring's default login-from</a></h1>
+		<h1>Anonymous user.</h1>
+		<h1><a href="/secured">Login with OpenID Provider</a></h1>
 	</div>
 </body>
 </html>
