@@ -1,0 +1,19 @@
+logging:
+  level.org.springframework:
+    security: DEBUG
+    web.client: DEBUG
+  pattern.console: '%d{HH:mm:ss} %-10.35logger{45} - %msg%n'
+
+spring.security.oauth2.client:
+  provider:
+    sam:
+      issuer-uri: 'https://id.provider.de'
+  registration:
+    sam:
+      authorization-grant-type: authorization_code
+      client-id: id
+      client-secret: password
+      redirect-uri: 'http://localhost:8080/process-login'
+      scope: openid
+
+sam.logout_url: 'https://id.provider.de/logout?redirectURL=http://localhost:8080'
