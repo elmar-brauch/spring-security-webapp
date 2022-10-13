@@ -13,6 +13,8 @@ public class SecurityConfiguration {
 	
 	@Value("${sam.logout_url}")
 	private String logoutUrl;
+	@Value("${sam.login_process_path}")
+	private String loginProcessPath;
 	
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -24,7 +26,7 @@ public class SecurityConfiguration {
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessHandler((req, resp, auth) -> new DefaultRedirectStrategy().sendRedirect(req, resp, logoutUrl))
 			.and().oauth2Login(c -> {
-				c.loginProcessingUrl("/checkout-scs/loggedin");
+				c.loginProcessingUrl(loginProcessPath);
 				c.loginPage("/oauth2/authorization/sam");
 			});
 		return http.build();

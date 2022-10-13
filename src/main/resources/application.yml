@@ -13,7 +13,8 @@ spring.security.oauth2.client:
       authorization-grant-type: authorization_code
       client-id: id
       client-secret: password
-      redirect-uri: 'http://localhost:8080/process-login'
+      redirect-uri: 'http://localhost:8080${sam.login_process_path}'
       scope: openid
 
 sam.logout_url: 'https://id.provider.de/logout?redirectURL=http://localhost:8080'
+sam.login_process_path: '/process-login'
