@@ -1,24 +1,16 @@
 package de.bsi.security;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfiguration {
 	
-	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		// TODO 1. Give access to anyone
-		// TODO 2. Give access to /admin URL only to logged in users
-		// TODO 3. Add logout
-		return http.build();
-	}
-	
-	// TODO 4. UserDetailsService for more users
+	// TODO 1. Create SecurityFilterChain Bean from HttpSecurity.
+	// TODO 2. Give access to anyone
+	// TODO 3. Give access to /admin URL only to logged in users
+	// TODO 4. Add logout
+	// TODO 5. UserDetailsService for more users
 	
 	
 	
