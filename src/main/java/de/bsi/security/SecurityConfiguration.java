@@ -1,9 +1,7 @@
 package de.bsi.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.*;
@@ -19,12 +17,15 @@ public class SecurityConfiguration {
 	@Bean
 	@Profile("api")
 	SecurityFilterChain securityFilterChainForApi(HttpSecurity http) throws Exception {
-		return http.authorizeHttpRequests()
-				.requestMatchers("/api/admin").hasRole("ADMIN")
+		http.authorizeHttpRequests()
+				.requestMatchers("/api/admin").hasAuthority("SCOPE_email")
 				.requestMatchers("/api/user").authenticated()
 				.requestMatchers("/api/anyone").permitAll()
 				.anyRequest().denyAll()
-			.and().build();
+			.and()
+				.oauth2ResourceServer()
+				.jwt();
+		return http.build();
 	}
 	
 	@Bean
