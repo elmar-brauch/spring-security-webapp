@@ -18,7 +18,7 @@ public class SecurityConfiguration {
 	
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/secured").authenticated()
+		http.authorizeHttpRequests().requestMatchers("/secured").authenticated()
 				.anyRequest().permitAll()
 			.and().logout()
 				// In this demo HTTP GET instead of POST is used for logout, 
