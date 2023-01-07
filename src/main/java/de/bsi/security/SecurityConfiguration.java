@@ -3,6 +3,7 @@ package de.bsi.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.*;
@@ -16,7 +17,19 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 	
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	@Profile("api")
+	SecurityFilterChain securityFilterChainForApi(HttpSecurity http) throws Exception {
+		return http.authorizeHttpRequests()
+				.requestMatchers("/api/admin").hasRole("ADMIN")
+				.requestMatchers("/api/user").authenticated()
+				.requestMatchers("/api/anyone").permitAll()
+				.anyRequest().denyAll()
+			.and().build();
+	}
+	
+	@Bean
+	@Profile("web")
+	SecurityFilterChain securityFilterChainForWeb(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests()
 			.requestMatchers("/admin").hasRole("ADMIN")
 			.anyRequest().permitAll()
@@ -26,6 +39,7 @@ public class SecurityConfiguration {
 	}
 	
 	@Bean
+	@Profile("web")
 	UserDetailsService users(@Autowired PasswordEncoder pwEnc) {
 	    UserDetails user = User.builder()
 	        .username("user")
