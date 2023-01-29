@@ -9,8 +9,10 @@ public class SecurityConfiguration {
 	// TODO 1. Create SecurityFilterChain Bean from HttpSecurity.
 	// TODO 2. Give access to anyone
 	// TODO 3. Give access to /admin URL only to logged in users
+	//	Adapt also UserController
 	// TODO 4. Add logout
 	// TODO 5. UserDetailsService for more users
+	// TODO 6. Check roles
 	
 	
 	
